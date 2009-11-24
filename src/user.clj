@@ -7,6 +7,8 @@
 (use 'clojure.contrib.test-is)
 (use 'clojure.contrib.sql)
 (use 'clojure.stacktrace)
+(use 'clojure.contrib.duck-streams)
+(use 'futils.find)
 
 (set! *warn-on-reflection* true)
 
