@@ -28,10 +28,8 @@
     :else files))
 
 (defn addfilter
-  [fn & args]
-  (comp (apply partial fn args) ufind))
-
-(def ufind find-files)
+  [fn1 fn2 & args]
+  (comp (apply partial fn1 args) fn2))
 
 (defn -main [& args]
   (with-command-line args
@@ -42,8 +40,9 @@
      remaining]
     ;(println "dir: " (first remaining))
     ;(println "name: " name)
-    (def ufind (addfilter filter-filename (re-pattern name)))
-    (def ufind (addfilter filter-filetype type))
+    (def ufind find-files)
+    (def ufind (addfilter filter-filename ufind (re-pattern name)))
+    (def ufind (addfilter filter-filetype ufind type))
     (println (ufind (first remaining)))))
 
 
