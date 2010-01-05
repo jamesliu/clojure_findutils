@@ -11,8 +11,9 @@
 
 (defn find-files
   "Return all directories and files"
-  [file]
-  (file-seq (file-str file)))
+  ([] (find-files ".") )
+  ([file]
+      (file-seq (file-str file))))
 
 (defn filter-filename
   "Return the filtered filename"
