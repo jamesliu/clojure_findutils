@@ -27,6 +27,12 @@
     (= ftype "f") (filter #(.isFile %) files)
     :else files))
 
+(defn filter-regex
+  [regex files]
+  (if (= regex nil)
+    files
+    (filter #(re-find re %) files)))
+
 (defn addfilter
   [fn1 fn2 & args]
   (comp (apply partial fn1 args) fn2))
@@ -36,12 +42,14 @@
     "Unix find command"
     [[name "file name" ".*"]
      [type "file type"]
+     [regex "regular expression"]
      [help? h? "help"]
-     remaining]
+     remaining "."]
     ;(println "dir: " (first remaining))
     ;(println "name: " name)
     (def ufind find-files)
     (def ufind (addfilter filter-filename ufind (re-pattern name)))
+    (def ufind (addfilter filter-filename ufind (re-pattern regex)))
     (def ufind (addfilter filter-filetype ufind type))
     (println (ufind (first remaining)))))
 
