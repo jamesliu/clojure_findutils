@@ -31,7 +31,7 @@
   [regex files]
   (if (= regex nil)
     files
-    (filter #(re-find re %) files)))
+    (filter #(re-find regex %) files)))
 
 (defn addfilter
   [fn1 fn2 & args]
@@ -44,7 +44,7 @@
      [type "file type"]
      [regex "regular expression"]
      [help? h? "help"]
-     remaining "."]
+     remaining]
     ;(println "dir: " (first remaining))
     ;(println "name: " name)
     (def ufind find-files)
