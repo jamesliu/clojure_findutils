@@ -1,3 +1,6 @@
+(use 'clojure.contrib.monads)
+(use 'clojure.contrib.generic.functor)
+(add-break-thread!)
 (defn find-classes [regex]
   (let [search-path-properities ["java.class.path" "sun.boot.class.path"]]
     (for [search-path search-path-properities

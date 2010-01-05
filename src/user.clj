@@ -4,6 +4,7 @@
 (use 'clojure.contrib.java-utils)
 (use 'clojure.contrib.def)
 (use 'clojure.contrib.ns-utils)
+(use 'clojure.contrib.seq-utils)
 (use 'clojure.contrib.test-is)
 (use 'clojure.contrib.sql)
 (use 'clojure.stacktrace)
