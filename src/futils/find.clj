@@ -41,7 +41,8 @@
 (defmethod filter-mtime \+
   [mtime files]
   (let [mtime_i (BigInteger. (.substring mtime 1))]
-    (filter #(> (quot (.lastModified %) 86400) mtime_i) files)))
+    (filter #(> (quot (- (System/currentTimeMillis) (.lastModified %)) 86400000)
+                mtime_i) files)))
 
 (defn addfilter
   [fn1 fn2 & args]
