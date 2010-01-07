@@ -37,6 +37,12 @@
   [regex files]  
   (filter #(re-matches regex (.getPath %)) files))
 
+(defmulti filter-mtime (fn [x y] (first x)))
+(defmethod filter-mtime \+
+  [mtime files]
+  (let [mtime_i (BigInteger. (.substring mtime 1))]
+    (filter #(> (quot (.lastModified %) 86400) mtime_i) files)))
+
 (defn addfilter
   [fn1 fn2 & args]
   (comp (apply partial fn1 args) fn2))
@@ -51,6 +57,8 @@
     [[name "file name"]
      [type "file type"]
      [regex "regular expression"]
+     [exec "command"]
+     [mtime "Files data was last modified n*24 hours ago"]
      [help? h? "help"]
      remaining]
     (def ufind find-files)
@@ -59,7 +67,10 @@
     (if type
       (def ufind (addfilter filter-filetype ufind type))) 
     (if regex
-      (def ufind (addfilter filter-regex ufind (re-pattern regex)))) 
+      (def ufind (addfilter filter-regex ufind (re-pattern regex))))
+    (if mtime
+      (def ufind (addfilter filter-mtime ufind mtime)))
+    (println remaining)
     (if (empty? remaining)
       (pretty-print (ufind "."))
       (pretty-print (ufind (first remaining))))))
