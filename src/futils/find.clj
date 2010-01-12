@@ -41,7 +41,20 @@
 (defmethod filter-mtime \+
   [mtime files]
   (let [mtime_i (BigInteger. (.substring mtime 1))]
-    (filter #(> (quot (- (System/currentTimeMillis) (.lastModified %)) 86400000)
+        (filter #(> (quot (- (System/currentTimeMillis) (.lastModified %)) 86400000)
+                mtime_i) files)))
+(defmethod filter-mtime \-
+  [mtime files]
+  (let [mtime_i (BigInteger. mtime)]
+    (do
+      (print mtime_i)
+      (filter #(> (quot (- (.lastModified %) (System/currentTimeMillis)) 86400000)
+                  mtime_i) files))))
+
+(defmethod filter-mtime :default
+  [mtime files]
+  (let [mtime_i (BigInteger. mtime)]
+    (filter #(= (quot (- (System/currentTimeMillis) (.lastModified %)) 86400000)
                 mtime_i) files)))
 
 (defn addfilter
@@ -75,5 +88,4 @@
     (if (empty? remaining)
       (pretty-print (ufind "."))
       (pretty-print (ufind (first remaining))))))
-
 
